@@ -3,7 +3,9 @@ import { ReactNode } from 'react'
 
 function dataURLtoBlob(dataurl:string) {
     const  arr = dataurl.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
+    const match = arr[0].match(/:(.*?);/)
+    if(!match) return;
+    const mime = match[1];
     let bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while(n--){
         u8arr[n] = bstr.charCodeAt(n);
@@ -33,10 +35,12 @@ tempLink.remove();
 }
 
 export const copy2clipboard = async (blob:string,type = 'image/png') =>{
+    const b = dataURLtoBlob(blob)
+    if(!b) return;
     try {
         await navigator.clipboard.write([
             new ClipboardItem({
-                'image/png': dataURLtoBlob(blob)
+                'image/png': b
             })
         ]);
         return true;
