@@ -6,14 +6,15 @@ import Link from 'next/link';
 
 
 export default async function Home(props:PageProps) {
+  const serverurl = process.env.VERCEL_URL ?? 'http://localhost:3000'
   const memeId = props.searchParams.meme ?? null;
-  const templateRes = await fetch('http://localhost:3000/api/memes',{
+  const templateRes = await fetch(`${serverurl}/api/memes`,{
     cache:'no-cache',
     method:'POST',
     body: JSON.stringify({memeId:memeId}),
   })
   const template = await templateRes.json() as MemeTemplate
-  const templatesRes = await fetch('http://localhost:3000/api/memes')
+  const templatesRes = await fetch(`${serverurl}/api/memes`)
   const templates = await templatesRes.json() as MemeTemplate[]
   return (
     <main className="max-w-[1200px]  mx-auto">
