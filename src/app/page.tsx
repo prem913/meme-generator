@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 
 export default async function Home(props:PageProps) {
-  console.log(process.env.VERCEL_URL)
   const serverurl = process.env.VERCEL_URL && 'https://'+process.env.VERCEL_URL
   const memeId = props.searchParams.meme ?? null;
   const templateRes = await fetch(`${serverurl ?? 'http://localhost:3000'}/api/memes`,{
